@@ -1,10 +1,27 @@
-/* eslint no-console:0 */
-// This file is automatically compiled by Webpack, along with any other files
-// present in this directory. You're encouraged to place your actual application logic in
-// a relevant structure within app/javascript and only use these pack files to reference
-// that code so it'll be compiled.
-//
-// To reference this file, add <%= javascript_pack_tag 'application' %> to the appropriate
-// layout file, like app/views/layouts/application.html.erb
+import "../../src/application.scss"
 
 console.log('Hello World from Webpacker')
+
+import Vue from 'vue/dist/vue.esm';
+import router from '../routes.js';
+import "jquery/dist/jquery"
+import "popper.js"
+import "bootstrap/dist/js/bootstrap";
+import "@coreui/coreui/dist/js/coreui";
+
+
+import Gravatar from 'vue-gravatar';
+Vue.component('v-gravatar', Gravatar);
+
+import App from "../App";
+
+document.addEventListener('DOMContentLoaded', () => {
+  const el = document.body.appendChild(document.createElement('hello'))
+  const app = new Vue({
+    el: '#app',
+    router,
+    template: '<App/>',
+    components: { App }
+  }).$mount('#app')
+  console.log(app)
+})

@@ -1,0 +1,14 @@
+// If you want to override variables do it here
+@import "variables";
+
+@import "~bootstrap/scss/bootstrap";
+@import "~font-awesome/scss/font-awesome";
+
+// Import styles
+@import "~@coreui/coreui/scss/coreui";
+
+// If you want to add something do it here
+@import "custom";
+
+// ie fixes
+@import "ie-fix";
