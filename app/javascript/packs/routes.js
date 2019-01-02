@@ -7,7 +7,7 @@ Vue.use(VueRouter);
 Vue.use(VueResource)
 Vue.use(BootstrapVue);
 
-import Users from "./components/users"
+import Users from "./components/views/users"
 
 const router = new VueRouter({
   mode: 'history',
