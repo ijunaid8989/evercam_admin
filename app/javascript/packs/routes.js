@@ -12,9 +12,13 @@ import Users from "./components/views/users"
 const router = new VueRouter({
   mode: 'history',
   routes: [
-    { path: '/', component: Users, name: 'users' },
-    // { path: '/users', component: UserIndex, name: 'users_path' },
+    { path: '/', component: Users, name: 'users', meta: { title: "Users"} }
   ]
+});
+
+router.beforeEach((to, from, next) => {
+  document.title = to.meta.title
+  next()
 });
 
 export default router;
