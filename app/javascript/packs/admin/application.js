@@ -13,13 +13,13 @@ import "@coreui/coreui/dist/js/coreui";
 import Gravatar from 'vue-gravatar';
 Vue.component('v-gravatar', Gravatar);
 
-import Header from "../components/shared/Header";
+import Header from "../components/shared/_header";
 Vue.component("v-header", Header);
 
-import CurrentUser from "../components/shared/CurrentUser";
+import CurrentUser from "../components/shared/_current_user";
 Vue.component("v-current-user", CurrentUser);
 
-import Sidebar from "../components/shared/Sidebar";
+import Sidebar from "../components/shared/_sidebar";
 Vue.component("v-sidebar", Sidebar);
 
 import Layout from "../components/shared/Layout";
