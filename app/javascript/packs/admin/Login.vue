@@ -43,26 +43,9 @@
 </template>
 
 <script>
-     export default {
-        data: () => ({
-            csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-          }),        
-    }
+  export default {
+    data: () => ({
+      csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+    })
+  }
 </script>
-<!-- <form class="new_user" id="new_user" action="/users/sign_in" accept-charset="UTF-8" method="post">
-  <input name="utf8" type="hidden" value="✓"><input type="hidden" name="authenticity_token" value="P0KProFSUzQ9TyUqeK4WHpYN9qB6XfAa8WDGHj0izmj0bqDl95vzBADvcTcbTtIE9PB1Yfq6eMlX3AqaM5B3eQ==">
-  <div class="field">
-    <label for="user_email">Email</label><br>
-    <input autofocus="autofocus" autocomplete="email" type="email" name="user[email]" id="user_email">
-  </div>
-
-  <div class="field">
-    <label for="user_password">Password</label><br>
-    <input autocomplete="current-password" type="password" name="user[password]" id="user_password">
-  </div>
-
-
-  <div class="actions">
-    <input type="submit" name="commit" value="Log in" data-disable-with="Log in">
-  </div>
-</form> -->

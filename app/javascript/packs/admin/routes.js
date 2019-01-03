@@ -7,7 +7,7 @@ Vue.use(VueRouter);
 Vue.use(VueResource)
 Vue.use(BootstrapVue);
 
-import Login from "../components/sessions/login"
+import Login from "./Login"
 
 const adminRouter = new VueRouter({
   mode: 'history',

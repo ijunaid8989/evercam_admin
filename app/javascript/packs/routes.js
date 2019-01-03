@@ -8,7 +8,6 @@ Vue.use(VueResource)
 Vue.use(BootstrapVue);
 
 import Users from "./components/views/users/users";
-import Login from "./components/sessions/login";
 import Page404 from "./components/views/Page404";
 
 Vue.component("v-notfound", Page404);
