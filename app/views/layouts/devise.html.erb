@@ -7,10 +7,8 @@
 
     <%= stylesheet_pack_tag 'admin/application' %>
   </head>
-
-  <body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
-    <div id='app' current_user="<%= @current_user %>">
-    </div>
+  <body class="app">
+    <%= yield %>
     <%= javascript_pack_tag 'admin/application' %>
   </body>
 </html>

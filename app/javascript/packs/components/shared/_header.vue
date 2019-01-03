@@ -10,17 +10,6 @@
     <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button" data-toggle="sidebar-lg-show">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <ul class="nav navbar-nav ml-auto">
-      <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-          <!-- <img class="img-avatar" src="/images/avatar.png"> -->
-          <div><v-gravatar email="junaid@evercam.io" class="img-avatar" :size="40" /></div>
-        </a>
-        <div class="dropdown-menu dropdown-menu-right">
-          <a class="dropdown-item" href="#">
-            <i class="fa fa-lock"></i> Logout</a>
-        </div>
-      </li>
-    </ul>
+    <v-current-user />
   </header>
 </template>
