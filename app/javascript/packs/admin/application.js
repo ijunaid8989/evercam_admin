@@ -28,6 +28,31 @@ Vue.component("v-layout", Layout);
 import App from "../App";
 import Login from "./Login";
 
+// configure Datatables with Bulma
+
+import axios from 'axios';
+import "./errorHandler";
+import Toastr from '../components/enso/vuedatatable/toastr';
+
+import fontawesome from '@fortawesome/fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+
+import { faUsers, faSearch, faSync, faAngleDown, faInfoCircle, faCheck, faTimes, faSignOutAlt }
+    from '@fortawesome/fontawesome-free-solid/shakable.es';
+fontawesome.library.add(faSearch, faSync, faAngleDown, faInfoCircle, faUsers, faCheck, faTimes, faSignOutAlt);
+
+Vue.component('fa', FontAwesomeIcon);
+
+Vue.use(Toastr, {
+    position: 'right',
+    duration: 3000,
+    closeButton: true,
+});
+
+window.axios = axios;
+
+// configure Datatables with Bulma
+
 document.addEventListener('DOMContentLoaded', () => {
   if(document.getElementById("app")){
     const node = document.getElementById('app');
@@ -40,7 +65,12 @@ document.addEventListener('DOMContentLoaded', () => {
       data: {
         user: current_user
       },
-      components: { App }
+      components: { App },
+      methods: {
+          clicked({ column, row }) {
+              this.$toastr.info(`You just clicked "${row[column.name]}" on column "${column.name}"`, 'Click Event');
+          },
+      }
     }).$mount('#app');
   }
 

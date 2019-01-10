@@ -27,6 +27,21 @@
     "simple-line-icons": "^2.4.1",
     "jquery": "^3.3.1",
     "popper.js": "^1.14.4",
-    "css-loader": "^0.28.1"
+    "css-loader": "^0.28.1",
+    "@fortawesome/fontawesome-free": "^5.6.3",
+    "vue-bulma-modal": "^1.0.1",
+    "accounting-js": "^1.1.1",
+    "css-element-queries": "^1.1.1",
+    "v-click-outside": "^2.0.2",
+    "v-tooltip": "^2.0.0-rc.33",
+    "@fortawesome/fontawesome-svg-core": "^1.2.12",
+    "@fortawesome/free-solid-svg-icons": "^5.6.3",
+    "bulma-toast": "^1.4.0",
+    "axios": "^0.18.0",
+    "lodash": "*",
+    "bulma": "^0.7.2",
+    "@fortawesome/vue-fontawesome": "^0.1.4",
+    "@fortawesome/fontawesome-free-solid": "^5.0.13",
+    "@fortawesome/fontawesome": "^1.1.8"
   }
 }

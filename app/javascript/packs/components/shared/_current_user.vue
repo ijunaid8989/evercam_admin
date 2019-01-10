@@ -6,7 +6,7 @@
       </a>
       <div class="dropdown-menu dropdown-menu-right">
         <a class="dropdown-item" href="/users/sign_out">
-          <i class="fa fa-lock"></i> Logout
+          <i class="fa fa-sign-out-alt"></i> Logout
         </a>
       </div>
     </li>

@@ -6,5 +6,8 @@ Rails.application.routes.draw do
   devise_for :users, controllers: {
     sessions: 'users/sessions'
   }, only: [:sessions]
+
+  get "/load_users" => "users#load_users"
+  get "/init_users" => "users#init_users"
   match "*path", to: "application#index", format: false, via: :get
 end

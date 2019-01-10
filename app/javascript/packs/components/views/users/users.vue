@@ -1,3 +1,13 @@
 <template>
-  <div>I am from User Component</div>
+  <vue-table class="box"
+    path="/init_users"
+    id="users">
+  </vue-table>
 </template>
+
+<script>
+import VueTable from '../../../components/enso/vuedatatable/VueTable.vue';
+export default {
+  components: { VueTable }
+};
+</script>
