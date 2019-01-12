@@ -40,7 +40,7 @@
                     <span class="sorter"
                         @click="toggleSort($event, column)"
                         v-if="column.meta.sortable">
-                        <span class="icon is-small">
+                        <span class="icon">
                             <fa :icon="sortIcon(column.meta.sort)" size="xs"/>
                         </span>
                     </span>

@@ -1,8 +1,10 @@
 <template>
+  <section>
   <vue-table class="box"
     path="/init_users"
     id="users">
   </vue-table>
+  </section>
 </template>
 
 <script>

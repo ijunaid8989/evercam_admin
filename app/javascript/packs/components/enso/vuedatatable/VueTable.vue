@@ -16,7 +16,7 @@
             v-on="$listeners"
             v-model="search"/>
         <div class="table-responsive"
-            v-responsive>
+            >
             <table class="table is-fullwidth is-marginless"
                 :class="template.style"
                 id="id">
@@ -100,10 +100,6 @@ export default {
 
     components: {
         TopControls, TableHeader, TableBody, TableFooter, Overlay, BottomControls,
-    },
-
-    directives: {
-        responsive: vResponsive,
     },
 
     props: {

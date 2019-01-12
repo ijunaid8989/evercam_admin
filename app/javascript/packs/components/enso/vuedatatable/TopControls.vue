@@ -13,9 +13,6 @@
                     :template="template"
                     :i18n="i18n"
                     v-on="$listeners"/>
-                <style-selector
-                    :template="template"
-                    class="is-hidden-mobile"/>
                 <button class="button"
                     @click="$emit('reload')">
                     <span class="icon is-small">

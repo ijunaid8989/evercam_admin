@@ -13,145 +13,50 @@ class UsersController < ApplicationController
                  from users u where 1=1 order by created_at desc
                 ) t"
               )
+    total_records = users.count
+    meta = JSON.parse(params["meta"])
+    display_length = meta["length"].to_i
+    display_length = display_length < 0 ? total_records : display_length
+    display_start = meta["start"].to_i
+    table_draw = params[:draw].to_i
 
-    render json: {
-        "count": 100000,
-        "filtered": 100000,
-        "total": {
-          "salary": "330237682",
-          "taxes": "267492522.42"
-        },
-        "data": [
-          {
-            "dtRowId": 11,
-            "name": "Mrs. Elsie Sanford",
-            "position": "Electrical and Electronics Drafter",
-            "seniority": "Partner",
-            "project": "AdminLTE",
-            "salary": 1717,
-            "taxes": "1390.77",
-            "is_active": true,
-            "hired_at": "05-03-2015"
-          },
-          {
-            "dtRowId": 12,
-            "name": "Kaylin Carter",
-            "position": "Legal Secretary",
-            "seniority": "Partner",
-            "project": "Enso SPA",
-            "salary": 1168,
-            "taxes": "946.08",
-            "is_active": true,
-            "hired_at": "24-10-2013"
-          },
-          {
-            "dtRowId": 13,
-            "name": "Ephraim Ziemann MD",
-            "position": "Health Technologist",
-            "seniority": "Senior",
-            "project": "Webshop",
-            "salary": 3098,
-            "taxes": "2509.38",
-            "is_active": true,
-            "hired_at": "28-12-2014"
-          },
-          {
-            "dtRowId": 14,
-            "name": "Troy Nolan DVM",
-            "position": "Calibration Technician OR Instrumentation Technician",
-            "seniority": "Partner",
-            "project": "Webshop",
-            "salary": 4714,
-            "taxes": "3818.34",
-            "is_active": false,
-            "hired_at": "07-03-2013"
-          },
-          {
-            "dtRowId": 15,
-            "name": "Vicente Parisian",
-            "position": "User Experience Manager",
-            "seniority": "Senior",
-            "project": "Webshop",
-            "salary": 1907,
-            "taxes": "1544.67",
-            "is_active": false,
-            "hired_at": "27-02-2017"
-          },
-          {
-            "dtRowId": 16,
-            "name": "Carley Pagac",
-            "position": "Production Laborer",
-            "seniority": "Senior",
-            "project": "Enso SPA",
-            "salary": 4762,
-            "taxes": "3857.22",
-            "is_active": false,
-            "hired_at": "08-04-2014"
-          },
-          {
-            "dtRowId": 17,
-            "name": "Prof. Coralie Heaney",
-            "position": "Claims Adjuster",
-            "seniority": "Staff",
-            "project": "AdminLTE",
-            "salary": 2894,
-            "taxes": "2344.14",
-            "is_active": true,
-            "hired_at": "21-03-2016"
-          },
-          {
-            "dtRowId": 18,
-            "name": "Beryl Hilpert",
-            "position": "Power Generating Plant Operator",
-            "seniority": "Associate",
-            "project": "AdminLTE",
-            "salary": 3430,
-            "taxes": "2778.30",
-            "is_active": false,
-            "hired_at": "09-11-2015"
-          },
-          {
-            "dtRowId": 19,
-            "name": "Prof. Kathlyn Gottlieb",
-            "position": "Grips",
-            "seniority": "Associate",
-            "project": "AdminLTE",
-            "salary": 3762,
-            "taxes": "3047.22",
-            "is_active": false,
-            "hired_at": "08-06-2016"
-          },
-          {
-            "dtRowId": 20,
-            "name": "Mr. Martin Bechtelar PhD",
-            "position": "Gaming Dealer",
-            "seniority": "Assistant",
-            "project": "Webshop",
-            "salary": 1872,
-            "taxes": "1516.32",
-            "is_active": true,
-            "hired_at": "31-10-2017"
-          }
-        ],
-        "fullRecordInfo": true,
-        "filters": true
+    index_end = display_start + display_length
+    index_end = index_end > total_records ? total_records - 1 : index_end
+    records = { data: [], draw: table_draw, count: total_records, filtered: total_records, fullRecordInfo: true, filters: true }
+    (display_start..index_end).each do |index|
+      records[:data][records[:data].count] = {
+        "dtRowId": users[index]["id"],
+        "username": users[index]["username"],
+        "name": users[index]["firstname"] + " " + users[index]["lastname"],
+        "email": users[index]["email"],
+        "api_id": users[index]["api_id"],
+        "api_key": users[index]["api_key"],
+        "cameras_owned": users[index]["cameras_owned"],
+        "camera_shares": users[index]["camera_shares"],
+        "total_cameras": users[index]["total_cameras"],
+        "country": users[index]["country"],
+        "created_at": users[index]["created_at"] ? DateTime.parse(users[index]["created_at"]).strftime("%A, %d %b %Y %l:%M %p") : "",
+        "confirmed_at": users[index]["confirmed_at"] ? DateTime.parse(users[index]["confirmed_at"]).strftime("%A, %d %b %Y %l:%M %p") : "",
+        "last_login_at": users[index]["last_login_at"] ? DateTime.parse(users[index]["last_login_at"]).strftime("%A, %d %b %Y %l:%M %p") : "",
+        "required_licence": users[index]["required_licence"],
+        "valid_licence": users[index]["valid_licence"],
+        "def": users[index]["def"],
+        "payment_method": users[index]["payment_method"],
+        "referral_url": users[index]["referral_url"],
+        "snapmail_count": users[index]["snapmail_count"]
       }
+    end
+    @pageload = false
+    render json: records
   end
 
   def init_users
     render json: {
                   "template": {
-                    "crtNo": true,
+                    "crtNo": false,
                     "selectable": true,
                     "buttons": {
                       "global": [
-                        {
-                          "type": "global",
-                          "icon": "file-excel",
-                          "class": "is-outlined",
-                          "event": "excel",
-                          "label": "Excel"
-                        },
                         {
                           "type": "global",
                           "icon": "plus",
@@ -161,27 +66,13 @@ class UsersController < ApplicationController
                         }
                       ],
                       "row": [
-                        {
-                          "type": "row",
-                          "icon": "pencil-alt",
-                          "class": "is-naked",
-                          "event": "edit"
-                        },
-                        {
-                          "type": "row",
-                          "icon": "trash-alt",
-                          "class": "is-naked",
-                          "event": "destroy",
-                          "confirmation": true,
-                          "message": "This is your custom confirmation. Are you sure?"
-                        }
                       ]
                     },
                     "columns": [
                       {
                         "label": "Name",
                         "name": "name",
-                        "data": "examples.name",
+                        "data": "name",
                         "meta": {
                           "searchable": true,
                           "sortable": true,
@@ -190,12 +81,10 @@ class UsersController < ApplicationController
                           "slot": false,
                           "rogue": false,
                           "editable": false,
-                          "total": false,
                           "date": false,
                           "icon": false,
                           "clickable": false,
-                          "customTotal": false,
-                          "notExportable": false,
+                          "notExportable": true,
                           "nullLast": false,
                           "visible": true,
                           "hidden": false,
@@ -203,9 +92,9 @@ class UsersController < ApplicationController
                         }
                       },
                       {
-                        "label": "Position",
-                        "name": "position",
-                        "data": "examples.position",
+                        "label": "Username",
+                        "name": "username",
+                        "data": "username",
                         "meta": {
                           "searchable": true,
                           "sortable": true,
@@ -214,37 +103,10 @@ class UsersController < ApplicationController
                           "slot": false,
                           "rogue": false,
                           "editable": false,
-                          "total": false,
-                          "date": false,
-                          "icon": false,
-                          "clickable": true,
-                          "customTotal": false,
-                          "notExportable": false,
-                          "nullLast": false,
-                          "visible": true,
-                          "hidden": false,
-                          "sort": "null"
-                        }
-                      },
-                      {
-                        "label": "Seniority",
-                        "name": "seniority",
-                        "data": "examples.seniority",
-                        "enum": "LaravelEnso\\Examples\\app\\Enums\\SeniorityEnum",
-                        "meta": {
-                          "searchable": false,
-                          "sortable": true,
-                          "translation": false,
-                          "boolean": false,
-                          "slot": false,
-                          "rogue": false,
-                          "editable": false,
-                          "total": false,
                           "date": false,
                           "icon": false,
                           "clickable": false,
-                          "customTotal": false,
-                          "notExportable": false,
+                          "notExportable": true,
                           "nullLast": false,
                           "visible": true,
                           "hidden": false,
@@ -252,33 +114,9 @@ class UsersController < ApplicationController
                         }
                       },
                       {
-                        "label": "Project",
-                        "name": "project",
-                        "data": "examples.project",
-                        "meta": {
-                          "searchable": true,
-                          "sortable": true,
-                          "translation": false,
-                          "boolean": false,
-                          "slot": true,
-                          "rogue": false,
-                          "editable": false,
-                          "total": false,
-                          "date": false,
-                          "icon": false,
-                          "clickable": false,
-                          "customTotal": false,
-                          "notExportable": false,
-                          "nullLast": false,
-                          "visible": true,
-                          "hidden": false,
-                          "sort": "null"
-                        }
-                      },
-                      {
-                        "label": "Salary",
-                        "name": "salary",
-                        "data": "examples.salary",
+                        "label": "Email",
+                        "name": "email",
+                        "data": "email",
                         "meta": {
                           "searchable": true,
                           "sortable": true,
@@ -287,23 +125,20 @@ class UsersController < ApplicationController
                           "slot": false,
                           "rogue": false,
                           "editable": false,
-                          "total": true,
                           "date": false,
                           "icon": false,
                           "clickable": false,
-                          "customTotal": false,
-                          "notExportable": false,
+                          "notExportable": true,
                           "nullLast": false,
                           "visible": true,
                           "hidden": false,
                           "sort": "null"
-                        },
-                        "money": {}
+                        }
                       },
                       {
-                        "label": "Taxes",
-                        "name": "taxes",
-                        "data": "examples.taxes",
+                        "label": "API Id",
+                        "name": "api_id",
+                        "data": "api_id",
                         "meta": {
                           "searchable": true,
                           "sortable": true,
@@ -312,61 +147,186 @@ class UsersController < ApplicationController
                           "slot": false,
                           "rogue": false,
                           "editable": false,
-                          "total": true,
                           "date": false,
                           "icon": false,
                           "clickable": false,
-                          "customTotal": false,
-                          "notExportable": false,
+                          "notExportable": true,
                           "nullLast": false,
                           "visible": true,
                           "hidden": false,
                           "sort": "null"
-                        },
-                        "money": {}
-                      },
-                      {
-                        "label": "Active",
-                        "name": "is_active",
-                        "data": "examples.is_active",
-                        "meta": {
-                          "searchable": false,
-                          "sortable": true,
-                          "translation": false,
-                          "boolean": true,
-                          "slot": false,
-                          "rogue": false,
-                          "editable": false,
-                          "total": false,
-                          "date": false,
-                          "icon": true,
-                          "clickable": false,
-                          "customTotal": false,
-                          "notExportable": false,
-                          "nullLast": false,
-                          "visible": false,
-                          "hidden": true,
-                          "sort": "null"
                         }
                       },
                       {
-                        "label": "Hired Since",
-                        "name": "hired_at",
-                        "data": "examples.hired_at",
+                        "label": "API Key",
+                        "name": "api_key",
+                        "data": "api_key",
                         "meta": {
-                          "searchable": false,
+                          "searchable": true,
                           "sortable": true,
                           "translation": false,
                           "boolean": false,
                           "slot": false,
                           "rogue": false,
                           "editable": false,
-                          "total": false,
-                          "date": true,
+                          "date": false,
                           "icon": false,
                           "clickable": false,
-                          "customTotal": false,
-                          "notExportable": false,
+                          "notExportable": true,
+                          "nullLast": false,
+                          "visible": true,
+                          "hidden": false,
+                          "sort": "null"
+                        }
+                      },
+                      {
+                        "label": "Camera Owned",
+                        "name": "cameras_owned",
+                        "data": "cameras_owned",
+                        "meta": {
+                          "searchable": true,
+                          "sortable": true,
+                          "translation": false,
+                          "boolean": false,
+                          "slot": false,
+                          "rogue": false,
+                          "editable": false,
+                          "date": false,
+                          "icon": false,
+                          "clickable": false,
+                          "notExportable": true,
+                          "nullLast": false,
+                          "visible": true,
+                          "hidden": false,
+                          "sort": "null"
+                        }
+                      },
+                      {
+                        "label": "Camera Shared",
+                        "name": "camera_shares",
+                        "data": "camera_shares",
+                        "meta": {
+                          "searchable": true,
+                          "sortable": true,
+                          "translation": false,
+                          "boolean": false,
+                          "slot": false,
+                          "rogue": false,
+                          "editable": false,
+                          "date": false,
+                          "icon": false,
+                          "clickable": false,
+                          "notExportable": true,
+                          "nullLast": false,
+                          "visible": true,
+                          "hidden": false,
+                          "sort": "null"
+                        }
+                      },
+                      {
+                        "label": "Cameras Total",
+                        "name": "total_cameras",
+                        "data": "total_cameras",
+                        "meta": {
+                          "searchable": true,
+                          "sortable": true,
+                          "translation": false,
+                          "boolean": false,
+                          "slot": false,
+                          "rogue": false,
+                          "editable": false,
+                          "date": false,
+                          "icon": false,
+                          "clickable": false,
+                          "notExportable": true,
+                          "nullLast": false,
+                          "visible": true,
+                          "hidden": false,
+                          "sort": "null"
+                        }
+                      },
+                      {
+                        "label": "Created At",
+                        "name": "created_at",
+                        "data": "created_at",
+                        "meta": {
+                          "searchable": true,
+                          "sortable": true,
+                          "translation": false,
+                          "boolean": false,
+                          "slot": false,
+                          "rogue": false,
+                          "editable": false,
+                          "date": false,
+                          "icon": false,
+                          "clickable": false,
+                          "notExportable": true,
+                          "nullLast": false,
+                          "visible": true,
+                          "hidden": false,
+                          "sort": "null"
+                        }
+                      },
+                      {
+                        "label": "Confirmed At",
+                        "name": "confirmed_at",
+                        "data": "confirmed_at",
+                        "meta": {
+                          "searchable": true,
+                          "sortable": true,
+                          "translation": false,
+                          "boolean": false,
+                          "slot": false,
+                          "rogue": false,
+                          "editable": false,
+                          "date": false,
+                          "icon": false,
+                          "clickable": false,
+                          "notExportable": true,
+                          "nullLast": false,
+                          "visible": true,
+                          "hidden": false,
+                          "sort": "null"
+                        }
+                      },
+                      {
+                        "label": "Country",
+                        "name": "country",
+                        "data": "country",
+                        "meta": {
+                          "searchable": true,
+                          "sortable": true,
+                          "translation": false,
+                          "boolean": false,
+                          "slot": false,
+                          "rogue": false,
+                          "editable": false,
+                          "date": false,
+                          "icon": false,
+                          "clickable": false,
+                          "notExportable": true,
+                          "nullLast": false,
+                          "visible": true,
+                          "hidden": false,
+                          "sort": "null"
+                        }
+                      },
+                      {
+                        "label": "Last Login At",
+                        "name": "last_login_at",
+                        "data": "last_login_at",
+                        "meta": {
+                          "searchable": true,
+                          "sortable": true,
+                          "translation": false,
+                          "boolean": false,
+                          "slot": false,
+                          "rogue": false,
+                          "editable": false,
+                          "date": false,
+                          "icon": false,
+                          "clickable": false,
+                          "notExportable": true,
                           "nullLast": false,
                           "visible": true,
                           "hidden": false,
@@ -385,29 +345,19 @@ class UsersController < ApplicationController
                     "debounce": 100,
                     "method": "GET",
                     "total": true,
-                    "enum": true,
-                    "money": true,
                     "date": true,
                     "searchable": true,
                     "sort": false,
                     "labels": {
-                      "crtNo": "#",
-                      "actions": "Actions"
                     },
                     "pathSegment": "table",
-                    "actions": true,
+                    "actions": false,
                     "align": "has-text-centered",
-                    "style": "is-hoverable",
+                    "style": "is-bordered",
                     "aligns": {
                       "center": "has-text-centered",
                       "left": "has-text-left",
                       "right": "has-text-right"
-                    },
-                    "styles": {
-                      "compact": "is-narrow",
-                      "hover": "is-hoverable",
-                      "striped": "is-striped",
-                      "bordered": "is-bordered"
                     },
                     "highlight": "has-background-info"
                   }
