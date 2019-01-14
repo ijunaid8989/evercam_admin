@@ -29,11 +29,11 @@ Vue.component("v-layout", Layout);
 import App from "../App";
 import Login from "./Login";
 
-import Vuetable from "vuetable-2";
+import {Vuetable, VuetablePagination, VuetablePaginationDropDown, VuetablePaginationInfo} from "vuetable-2";
 Vue.component("vuetable", Vuetable);
-// Vue.component("vuetable-pagination", VuetablePagination);
-// Vue.component("vuetable-pagination-dropdown", VuetablePaginationDropDown);
-// Vue.component("vuetable-pagination-info", VuetablePaginationInfo);
+Vue.component("vuetable-pagination", VuetablePagination);
+Vue.component("vuetable-pagination-dropdown", VuetablePaginationDropDown);
+Vue.component("vuetable-pagination-info", VuetablePaginationInfo);
 
 document.addEventListener('DOMContentLoaded', () => {
   if(document.getElementById("app")){
