@@ -1,99 +1,68 @@
 <template>
- <div id="table-wrapper" class="ui container">
-  <vuetable ref="vuetable"
-    api-url="https://vuetable.ratiw.net/api/users"
-    :fields="fields"
-    pagination-path=""
-    :per-page="perPage"
-    :sort-order="sortOrder"
-    @vuetable:pagination-data="onPaginationData"
-    @vuetable:initialized="onInitialized"
-    @vuetable:loading="showLoader"
-    @vuetable:loaded="hideLoader"
-  >
-    </vuetable>
-      <div class="vuetable-pagination ui bottom segment grid">
-        <vuetable-pagination-info ref="paginationInfo"
-        ></vuetable-pagination-info>
-        <component :is="paginationComponent" ref="pagination"
-          @vuetable-pagination:change-page="onChangePage"
-        ></component>
+ <div id="table-wrapper" :class="['vuetable-wrapper ui basic segment', loading]">
+  <div class="handle">
+    <vuetable ref="vuetable"
+      api-url="/v1/users"
+      :fields="fields"
+      pagination-path=""
+      data-path="data"
+      :per-page="perPage"
+      :sort-order="sortOrder"
+      @vuetable:pagination-data="onPaginationData"
+      @vuetable:initialized="onInitialized"
+      @vuetable:loading="showLoader"
+      @vuetable:loaded="hideLoader"
+    />
     </div>
+    <div class="vuetable-pagination ui bottom segment grid">
+      <div class="field perPage-margin">
+        <label>Per Page:</label>
+        <select class="ui simple dropdown" v-model="perPage">
+          <option :value="50">50</option>
+          <option :value="100">100</option>
+          <option :value="500">500</option>
+          <option :value="1000">1000</option>
+        </select>
+      </div>
+      <vuetable-pagination-info ref="paginationInfo"
+      ></vuetable-pagination-info>
+      <component :is="paginationComponent" ref="pagination"
+        @vuetable-pagination:change-page="onChangePage"
+      ></component>
+  </div>
   </div>
 </template>
 
-<style type="text/css" scoped>
-  #table-wrapper {
+<style scoped>
+  .perPage-margin {
     margin-top: 5px;
   }
-  .orange {
-    color: orange;
+  .handle {
+    overflow: scroll;
   }
-
-  th.sortable {
-    color: #ec971f;
-  }
-
-  span.icon.sort-icon {
-    float: right;
-  }
-
 </style>
 
 <script>
-import moment from "moment";
+import FieldsDef from "./FieldsDef.js";
+
 export default {
   data: function() {
     return {
       paginationComponent: "vuetable-pagination",
       loading: "",
-      perPage: 10,
+      perPage: 50,
       sortOrder: [
         {
           field: 'name',
-          sortField: 'name',
-          direction: 'asc',
+          direction: 'desc',
         }
       ],
-      fields: [
-        { 
-          name: 'name', 
-          title: `<span class="icon orange"><i class="fa fa-user"></i></span> Full Name`,
-          sortField: 'name',
-          width: '20%'
-        }, 
-        {
-          name: 'email',
-          title: 'Email',
-          sortField: 'email',
-          width: '20%'
-        },
-        {
-          name: 'birthdate',
-          sortField: 'birthdate',
-          width: '10%',
-          formatter: (value) => moment(value, 'YYYY-MM-DD').format('D MMM YYYY')
-        },
-        {
-          name: 'nickname',
-          sortField: 'nickname',
-          width: '12%',
-          formatter: (value) => value.toUpperCase()
-        },
-        {
-          name: 'gender',
-          title: 'Gender',
-          sortField: 'gender',
-          width: '8%',
-          formatter: (value) => {
-            return value === 'F' ? 'Female' : 'Male'
-          }
-        },
-      ]
+      fields: FieldsDef
     }
   },
   watch: {
     perPage(newVal, oldVal) {
+      console.log("i am called");
       this.$nextTick(() => {
         this.$refs.vuetable.refresh();
       });
@@ -128,34 +97,6 @@ export default {
 
     hideLoader() {
       this.loading = "";
-    },
-
-    showSettingsModal() {
-      this.$refs.settingsModal.show();
-    },
-
-    onCellClicked({ data, field, event }) {
-      if (field.name !== this.fieldPrefix + "actions") {
-        this.$refs.vuetable.toggleDetailRow(data.id);
-      }
-    },
-
-    onActionClicked(action, data) {
-      sweetAlert(action, data.name);
-    },
-
-    onRowHeaderEvent(type, payload) {
-      console.log("onRowHeaderEvent:", type, payload);
-
-      let handler = RowEventHandler;
-
-      return typeof handler[type] === "function"
-        ? handler[type](this, this.$refs.vuetable, payload)
-        : console.log("Unhandled event: ", type, payload);
-    },
-
-    onScrollbarVisible(toggle) {
-      this.scrollbarVisible = toggle;
     }
   }
 }
