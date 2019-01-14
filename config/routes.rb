@@ -6,5 +6,7 @@ Rails.application.routes.draw do
   devise_for :users, controllers: {
     sessions: 'users/sessions'
   }, only: [:sessions]
-  match "*path", to: "application#index", format: false, via: :get
+  # match "*path", to: "application#index", format: false, via: :get
+
+  get "/v1/users" => "users#index"
 end
