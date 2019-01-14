@@ -1,4 +1,5 @@
 import "../../src/application.scss"
+import "semantic-ui-css/semantic.css";
 
 console.log('Hello World from Webpacker')
 
@@ -27,6 +28,12 @@ Vue.component("v-layout", Layout);
 
 import App from "../App";
 import Login from "./Login";
+
+import Vuetable from "vuetable-2";
+Vue.component("vuetable", Vuetable);
+// Vue.component("vuetable-pagination", VuetablePagination);
+// Vue.component("vuetable-pagination-dropdown", VuetablePaginationDropDown);
+// Vue.component("vuetable-pagination-info", VuetablePaginationInfo);
 
 document.addEventListener('DOMContentLoaded', () => {
   if(document.getElementById("app")){
