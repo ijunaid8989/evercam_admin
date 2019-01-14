@@ -1,8 +1,9 @@
-import Vue from "vue/dist/vue.esm";
+import Vue from 'vue/dist/vue.esm';
+import VueRouter from "vue-router";
 import VueResource from "vue-resource";
 
 Vue.use(VueRouter);
-Vue.use(VueResource)
+Vue.use(VueResource);
 
 import Users from "./components/views/users/users";
 import Page404 from "./components/views/Page404";
