@@ -26,6 +26,9 @@ Vue.component("v-sidebar", Sidebar);
 import Layout from "../components/shared/Layout";
 Vue.component("v-layout", Layout);
 
+import UserFilters from "../components/views/users/user_filters";
+Vue.component("v-user-filters", UserFilters);
+
 import App from "../App";
 import Login from "./Login";
 

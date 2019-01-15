@@ -1,36 +1,41 @@
 <template>
- <div id="table-wrapper" :class="['vuetable-wrapper ui basic segment', loading]">
-  <div class="handle">
-    <vuetable ref="vuetable"
-      api-url="/v1/users"
-      :fields="fields"
-      pagination-path=""
-      data-path="data"
-      :per-page="perPage"
-      :sort-order="sortOrder"
-      @vuetable:pagination-data="onPaginationData"
-      @vuetable:initialized="onInitialized"
-      @vuetable:loading="showLoader"
-      @vuetable:loaded="hideLoader"
-    />
+  <div>
+    <div class="overflow-forms">
+      <v-user-filters />
     </div>
-    <div class="vuetable-pagination ui bottom segment grid">
-      <div class="field perPage-margin">
-        <label>Per Page:</label>
-        <select class="ui simple dropdown" v-model="perPage">
-          <option :value="50">50</option>
-          <option :value="100">100</option>
-          <option :value="500">500</option>
-          <option :value="1000">1000</option>
-        </select>
+    <div id="table-wrapper" :class="['vuetable-wrapper ui basic segment', loading]">
+      <div class="handle">
+        <vuetable ref="vuetable"
+          api-url="/v1/users"
+          :fields="fields"
+          pagination-path=""
+          data-path="data"
+          :per-page="perPage"
+          :sort-order="sortOrder"
+          @vuetable:pagination-data="onPaginationData"
+          @vuetable:initialized="onInitialized"
+          @vuetable:loading="showLoader"
+          @vuetable:loaded="hideLoader"
+        />
       </div>
-      <vuetable-pagination-info ref="paginationInfo"
-      ></vuetable-pagination-info>
-      <component :is="paginationComponent" ref="pagination"
-        @vuetable-pagination:change-page="onChangePage"
-      ></component>
-  </div>
-  </div>
+      <div class="vuetable-pagination ui bottom segment grid">
+        <div class="field perPage-margin">
+          <label>Per Page:</label>
+          <select class="ui simple dropdown" v-model="perPage">
+            <option :value="50">50</option>
+            <option :value="100">100</option>
+            <option :value="500">500</option>
+            <option :value="1000">1000</option>
+          </select>
+        </div>
+        <vuetable-pagination-info ref="paginationInfo"
+        ></vuetable-pagination-info>
+        <component :is="paginationComponent" ref="pagination"
+          @vuetable-pagination:change-page="onChangePage"
+        ></component>
+      </div>
+    </div>
+</div>
 </template>
 
 <style scoped>
@@ -39,6 +44,12 @@
   }
   .handle {
     overflow-x: scroll;
+  }
+  .overflow-forms {
+    overflow: hidden;
+  }
+  #table-wrapper {
+    margin-top: 3px;
   }
 </style>
 
