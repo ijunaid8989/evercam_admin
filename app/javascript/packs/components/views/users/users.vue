@@ -1,5 +1,6 @@
 <template>
- <div id="table-wrapper" :class="['vuetable-wrapper ui basic segment', loading]">
+ <div id="table-wrapper" class="">
+  <img v-if="loading" src="/images/loading.gif" id="api-wait">
   <div class="handle">
     <vuetable ref="vuetable"
       api-url="/v1/users"
@@ -8,15 +9,20 @@
       data-path="data"
       :per-page="perPage"
       :sort-order="sortOrder"
+      :show-sort-icons="true"
+      :css="css.table"
       @vuetable:pagination-data="onPaginationData"
       @vuetable:initialized="onInitialized"
       @vuetable:loading="showLoader"
       @vuetable:loaded="hideLoader"
     />
     </div>
-    <div class="vuetable-pagination ui bottom segment grid">
+    <div style="margin-top:10px;">
+      <component :is="paginationComponent" ref="pagination"
+        @vuetable-pagination:change-page="onChangePage"
+      ></component>
       <div class="field perPage-margin">
-        <label>Per Page:</label>
+        <label>View records</label>
         <select class="ui simple dropdown" v-model="perPage">
           <option :value="50">50</option>
           <option :value="100">100</option>
@@ -24,12 +30,7 @@
           <option :value="1000">1000</option>
         </select>
       </div>
-      <vuetable-pagination-info ref="paginationInfo"
-      ></vuetable-pagination-info>
-      <component :is="paginationComponent" ref="pagination"
-        @vuetable-pagination:change-page="onChangePage"
-      ></component>
-  </div>
+    </div>
   </div>
 </template>
 
@@ -38,18 +39,25 @@
     margin-top: 5px;
   }
   .handle {
-    overflow: scroll;
+    overflow-x: scroll;
+  }
+  .custom-paging {
+    margin-top: 3px;
+  } 
+  #table-wrapper {
+    margin: 10px;
   }
 </style>
 
 <script>
 import FieldsDef from "./FieldsDef.js";
+import CssConfig from "./VuetableBootstrap4Config.js";
 
 export default {
   data: function() {
     return {
       paginationComponent: "vuetable-pagination",
-      loading: "",
+      loading: true,
       perPage: 60,
       sortOrder: [
         {
@@ -57,12 +65,12 @@ export default {
           direction: 'desc',
         }
       ],
+      css: CssConfig,
       fields: FieldsDef
     }
   },
   watch: {
     perPage(newVal, oldVal) {
-      console.log("i am called");
       this.$nextTick(() => {
         this.$refs.vuetable.refresh();
       });
@@ -79,7 +87,6 @@ export default {
 
   methods: {
     onPaginationData(tablePagination) {
-      this.$refs.paginationInfo.setPaginationData(tablePagination);
       this.$refs.pagination.setPaginationData(tablePagination);
     },
 
@@ -92,11 +99,13 @@ export default {
     },
 
     showLoader() {
-      this.loading = "loading";
+      console.log("i am here")
+      this.loading = true;
     },
 
     hideLoader() {
-      this.loading = "";
+      console.log("i am hideing")
+      this.loading = false;
     }
   }
 }

@@ -5,19 +5,20 @@ export default [
   {
     name: 'vuetable-field-checkbox',
     title: "checkbox",
-    width: "2%"
+    width: "2px"
   },
   { 
     name: 'payment_method', 
     title: "Type",
     sortField: 'payment_method',
-    width: '90px'
+    width: '9px'
   }, 
   {
     name: 'name',
     title: 'Name',
     sortField: 'name',
-    width: '95px'
+    width: '95px',
+    dataClass: ""
   },
   {
     name: 'email',
