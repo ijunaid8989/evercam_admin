@@ -7,12 +7,18 @@ export default [
     title: "checkbox",
     width: "2%"
   },
-  { 
+  {
     name: 'payment_method', 
     title: "Type",
     sortField: 'payment_method',
     width: '90px'
-  }, 
+  },
+  {
+    name: 'username',
+    title: 'Username',
+    sortField: 'username',
+    width: '95px'
+  },
   {
     name: 'name',
     title: 'Name',
