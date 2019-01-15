@@ -50,7 +50,7 @@ export default {
     return {
       paginationComponent: "vuetable-pagination",
       loading: "",
-      perPage: 50,
+      perPage: 60,
       sortOrder: [
         {
           field: 'name',

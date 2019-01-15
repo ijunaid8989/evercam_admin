@@ -15,16 +15,16 @@ class UsersController < ApplicationController
     total_records = users.count
     display_length = params["per_page"].to_i
     display_length = display_length < 0 ? total_records : display_length
-    display_start = params["page"].to_i < 2 ? 0 : params["page"].to_i * display_length + 1
+    display_start = params["page"].to_i <= 1 ? 0 : (params["page"].to_i - 1) * display_length + 1
 
-    index_end = display_start + display_length
-    index_end = index_end > total_records ? total_records - 1 : index_end - 1
-    last_page = total_records / display_length
+    index_end = ((params["page"].to_i - 1) * display_length) + display_length
+    index_end = index_end > total_records ? total_records - 1 : index_end
+    last_page = (total_records / display_length.to_f).round
     records = {
       data: [],
       total: total_records,
       per_page: display_length,
-      from: display_start + 1,
+      from: display_start,
       to: index_end,
       current_page: params["page"],
       last_page: last_page,
