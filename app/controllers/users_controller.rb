@@ -1,5 +1,33 @@
 class UsersController < ApplicationController
   def index
+    condition = "where 1=1"
+    if params[:username].present?
+      condition += " and lower(u.username) like lower('%#{params[:username]}%')"
+    end
+    if params[:email].present?
+      condition += " and lower(u.email) like lower('%#{params[:email]}%')"
+    end
+    if params[:fullname].present?
+      condition += " and lower(u.firstname || ' ' || u.lastname) like lower('%#{params[:fullname]}%')"
+    end
+    if params[:payment_method].present?
+      condition += " and u.payment_method=#{params[:payment_method].to_i}"
+    end
+    if params[:created_at_date].present?
+      condition += " and u.created_at < date_trunc('month', CURRENT_DATE) - INTERVAL '#{params[:created_at_date].to_i / 12.0} year'"
+    end
+    if params[:last_login_at_date].present?
+      condition += " and u.last_login_at < date_trunc('month', CURRENT_DATE) - INTERVAL '#{params[:last_login_at_date].to_i / 12.0} year'"
+    end
+    if params[:last_login_at_boolean].present? && params[:last_login_at_boolean] == "true"
+      condition += " and u.last_login_at is not null"
+    end
+    if params[:last_login_at_boolean].present? && params[:last_login_at_boolean] == "false"
+      condition += " and u.last_login_at is null"
+    end
+    if params[:last_login_at_boolean].present? && params[:last_login_at_boolean] == "whatever"
+      condition += ""
+    end
     users = User.connection.select_all(
                 "select *, (CASE WHEN (required_licence - (CASE WHEN valid_licence >=0 THEN valid_licence ELSE 0 END)) >= 0 THEN (required_licence - (CASE WHEN valid_licence >=0 THEN valid_licence ELSE 0 END)) ELSE 0 end) def, (cameras_owned + camera_shares) total_cameras from (
                  select *, (select count(cr.id) from cloud_recordings cr left join cameras c on c.owner_id=u.id where c.id=cr.camera_id and cr.status <>'off' and cr.storage_duration <> 1) required_licence,
@@ -9,9 +37,8 @@ class UsersController < ApplicationController
                  (select count(*) from snapmails sm left join users suser on sm.user_id=suser.id where suser.id = u.id) snapmail_count,
                  (select name from countries ct left join users uuuuu on ct.id=uuuuu.country_id where uuuuu.id=u.id) country,
                  (select count(cs1.id) from camera_shares cs1 where cs1.user_id=u.id and cs1.camera_id = 279) share_id
-                 from users u where 1=1 order by created_at desc
-                ) t"
-              )
+                 from users u #{condition} order by created_at desc
+                ) t")
     total_records = users.count
     display_length = params["per_page"].to_i
     display_length = display_length < 0 ? total_records : display_length

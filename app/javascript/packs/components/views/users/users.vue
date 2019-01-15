@@ -12,6 +12,7 @@
           data-path="data"
           :per-page="perPage"
           :sort-order="sortOrder"
+          :append-params="moreParams"
           @vuetable:pagination-data="onPaginationData"
           @vuetable:initialized="onInitialized"
           @vuetable:loading="showLoader"
@@ -68,6 +69,7 @@ export default {
           direction: 'desc',
         }
       ],
+      moreParams: {},
       fields: FieldsDef
     }
   },
@@ -88,7 +90,27 @@ export default {
     }
   },
 
+  mounted() {
+    this.$events.$on('filter-set', eventData => this.onFilterSet(eventData))
+    this.$events.$on('filter-reset', e => this.onFilterReset())
+  },
+
   methods: {
+    onFilterSet (filterText) {
+      this.moreParams = {
+        "username": filterText.username,
+        "fullname": filterText.fullname,
+        "email": filterText.email,
+        "payment_method": filterText.payment_method
+      }
+      this.$nextTick( () => this.$refs.vuetable.refresh())
+    },
+
+    onFilterReset () {
+      this.moreParams = {}
+      this.$nextTick( () => this.$refs.vuetable.refresh())
+    },
+
     onPaginationData(tablePagination) {
       this.$refs.paginationInfo.setPaginationData(tablePagination);
       this.$refs.pagination.setPaginationData(tablePagination);

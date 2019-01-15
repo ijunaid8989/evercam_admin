@@ -5,9 +5,9 @@
         Search
       </div>
       <div class="input-divs">
-        <input type="text" class="first-ins" placeholder="Username" id="username" autocomplete="off">
-        <input type="text" class="first-ins" placeholder="Fullname" id="fullname" autocomplete="off">
-        <input type="text" class="first-ins" placeholder="email" id="email" autocomplete="off">
+        <input type="text" v-model="username" @keyup="userFilterGlobal" class="first-ins" placeholder="Username" id="username" autocomplete="off">
+        <input type="text" v-model="fullname" @keyup="userFilterGlobal" class="first-ins" placeholder="Fullname" id="fullname" autocomplete="off">
+        <input type="text" v-model="email" @keyup="userFilterGlobal" class="first-ins" placeholder="email" id="email" autocomplete="off">
       </div>
     </div>
     <div class="main-contain licence-space">
@@ -44,7 +44,7 @@
         Type
       </div>
       <div class="payment-type-divs">
-        <select id="user_payment_type" class="first-ins" autocomplete="off">
+        <select id="user_payment_type" v-model="payment_method" @change="userFilterGlobal" class="first-ins" autocomplete="off">
           <option value="">All</option>
           <option value="0">Stripe</option>
           <option value="1">Custom</option>
@@ -110,7 +110,7 @@
       <div class="btn-div" style="width: 235px;margin-left: 10px;">
         <button class="clear-btn-f" id="btn-modify">Modify</button>
         <button class="clear-btn-f" id="btn-delete">Delete</button>
-        <button type="button" class="clear-btn-f" id="filterClear">Clear Filter</button>
+        <button type="button" @click="resetUserFilter" class="clear-btn-f" id="filterClear">Clear Filter</button>
       </div>
     </div>
   </div>
@@ -239,5 +239,33 @@
   border: none;
   margin-left: 10px;
 }
-
 </style>
+<script>
+  export default {
+    data () {
+      return {
+        username: "",
+        fullname: "",
+        email: "",
+        payment_method: "",
+        allParams: {}
+      }
+    },
+    methods: {
+      userFilterGlobal () {
+        this.allParams.username = this.username
+        this.allParams.fullname = this.fullname
+        this.allParams.email = this.email
+        this.allParams.payment_method = this.payment_method
+        this.$events.fire('filter-set', this.allParams)
+      },
+
+      resetUserFilter () {
+        this.username = ''
+        this.fullname = ''
+        this.$events.fire('filter-reset')
+        console.log('resetFilter')
+      }
+    }
+  }
+</script>
