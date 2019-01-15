@@ -38,7 +38,7 @@
     margin-top: 5px;
   }
   .handle {
-    overflow: scroll;
+    overflow-x: scroll;
   }
 </style>
 
