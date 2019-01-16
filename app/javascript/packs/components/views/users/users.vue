@@ -12,6 +12,7 @@
           data-path="data"
           :per-page="perPage"
           :sort-order="sortOrder"
+          :append-params="moreParams"
           @vuetable:pagination-data="onPaginationData"
           @vuetable:initialized="onInitialized"
           @vuetable:loading="showLoader"
@@ -57,7 +58,7 @@
 import FieldsDef from "./FieldsDef.js";
 
 export default {
-  data: function() {
+  data: () => {
     return {
       paginationComponent: "vuetable-pagination",
       loading: "",
@@ -68,6 +69,7 @@ export default {
           direction: 'desc',
         }
       ],
+      moreParams: {},
       fields: FieldsDef
     }
   },
@@ -88,7 +90,40 @@ export default {
     }
   },
 
+  mounted() {
+    this.$events.$on('filter-set', eventData => this.onFilterSet(eventData))
+    this.$events.$on('filter-reset', e => this.onFilterReset())
+  },
+
   methods: {
+    onFilterSet (filterText) {
+      this.moreParams = {
+        "username": filterText.username,
+        "fullname": filterText.fullname,
+        "email": filterText.email,
+        "payment_method": filterText.payment_method,
+        "last_login_at_boolean": filterText.last_login_at_boolean,
+        "last_login_at_date": filterText.last_login_at_date,
+        "created_at_date": filterText.created_at_date,
+        "total_cameras": filterText.total_cameras,
+        "include_erc": filterText.include_erc,
+        "cameras_owned": filterText.cameras_owned,
+        "camera_shares": filterText.camera_shares,
+        "licREQ1": filterText.licREQ1,
+        "licREQ2": filterText.licREQ2,
+        "licVALID1": filterText.licVALID1,
+        "licVALID2": filterText.licVALID2,
+        "licDEF1": filterText.licDEF1,
+        "licDEF2": filterText.licDEF2
+      }
+      this.$nextTick( () => this.$refs.vuetable.refresh())
+    },
+
+    onFilterReset () {
+      this.moreParams = {}
+      this.$nextTick( () => this.$refs.vuetable.refresh())
+    },
+
     onPaginationData(tablePagination) {
       this.$refs.paginationInfo.setPaginationData(tablePagination);
       this.$refs.pagination.setPaginationData(tablePagination);

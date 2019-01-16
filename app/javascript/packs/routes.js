@@ -1,7 +1,9 @@
 import Vue from 'vue/dist/vue.esm';
 import VueRouter from "vue-router";
 import VueResource from "vue-resource";
+import VueEvents from "vue-events";
 
+Vue.use(VueEvents)
 Vue.use(VueRouter);
 Vue.use(VueResource);
 
