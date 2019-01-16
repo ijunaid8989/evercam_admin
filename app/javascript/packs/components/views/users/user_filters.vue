@@ -15,22 +15,22 @@
         Licence Required
       </div>
       <div class="input-divs-s">
-        <input type="text" class="small-ins" placeholder="from" id="licREQ1" autocomplete="off">
-        <input type="text" class="small-ins" placeholder="to" id="licREQ2" autocomplete="off">
+        <input type="text" v-on:keypress="isNumber($event)" class="small-ins" placeholder="from" id="licREQ1" autocomplete="off">
+        <input type="text" v-on:keypress="isNumber($event)" class="small-ins" placeholder="to" id="licREQ2" autocomplete="off">
       </div>
       <div class="filter-second">
         Licence Valid
       </div>
       <div class="input-divs-s">
-        <input type="text" class="small-ins" placeholder="from" id="licVALID1" autocomplete="off">
-        <input type="text" class="small-ins" placeholder="to" id="licVALID2" autocomplete="off">
+        <input type="text" v-on:keypress="isNumber($event)" class="small-ins" placeholder="from" id="licVALID1" autocomplete="off">
+        <input type="text" v-on:keypress="isNumber($event)" class="small-ins" placeholder="to" id="licVALID2" autocomplete="off">
       </div>
       <div class="filter-second def-ins">
         Licence Deficient
       </div>
       <div class="input-divs-s">
-        <input type="text" class="small-ins" placeholder="from" id="licDEF1" autocomplete="off">
-        <input type="text" class="small-ins" placeholder="to" id="licDEF2" autocomplete="off">
+        <input type="text" v-on:keypress="isNumber($event)" class="small-ins" placeholder="from" id="licDEF1" autocomplete="off">
+        <input type="text" v-on:keypress="isNumber($event)" class="small-ins" placeholder="to" id="licDEF2" autocomplete="off">
       </div>
     </div>
     <div class="main-contain licence-space">
@@ -38,7 +38,7 @@
         Total Cameras
       </div>
       <div class="input-divs-s">
-        <input type="text" class="medium-ins" placeholder="numeric" id="total_cameras" autocomplete="off">
+        <input type="text" v-on:keypress="isNumber($event)" class="medium-ins" placeholder="numeric" id="total_cameras" autocomplete="off">
       </div>
       <div class="filter-second">
         Type
@@ -60,19 +60,19 @@
         Created Date Older than
       </div>
       <div class="input-divs-s" style="width: 68px;margin-top: 4px;">
-        <input type="text" class="medium-ins" id="created_at_date" autocomplete="off" style="width: 35px;" placeholder="MTs">
+        <input type="text" v-model="created_at_date" @keyup="userFilterGlobal" v-on:keypress="isNumber($event)" class="medium-ins" id="created_at_date" autocomplete="off" style="width: 35px;" placeholder="MTs">
       </div>
       <div class="filter-name" style="margin-left: -21px;width: 175px;margin-top: 4px;">
         Last Login Date Older than
       </div>
       <div class="input-divs-s" style="margin-top: 5px;width: 52px;">
-        <input type="text" class="medium-ins" id="last_login_at_date" autocomplete="off" style="width: 35px;" placeholder="MTs">
+        <input type="text" v-model="last_login_at_date" @keyup="userFilterGlobal" class="medium-ins" id="last_login_at_date" autocomplete="off" style="width: 35px;" placeholder="MTs" v-on:keypress="isNumber($event)">
       </div>
       <div class="filter-second" style="margin-top: 3px;">
         Last Login
       </div>
       <div class="payment-type-divs" style="margin-left: -25px;">
-        <select id="last_login_at_boolean" class="first-ins" autocomplete="off" style="width: 135px; margin-top: 4px;">
+        <select id="last_login_at_boolean" v-model="last_login_at_boolean" @change="userFilterGlobal" class="first-ins" autocomplete="off" style="width: 135px; margin-top: 4px;">
           <option value="true">True</option>
           <option value="false">False</option>
           <option value="whatever" selected="selected">Whatever</option>
@@ -84,13 +84,13 @@
         Cameras Owned &lt;
       </div>
       <div class="input-divs-s">
-        <input type="text" class="medium-ins" placeholder="numeric" id="owned_cameras" autocomplete="off" style="width: 37px;">
+        <input type="text" v-on:keypress="isNumber($event)" class="medium-ins" placeholder="numeric" id="owned_cameras" autocomplete="off" style="width: 37px;">
       </div>
       <div class="filter-name" style="margin-left: -59px;">
         Cameras Shared &lt;
       </div>
       <div class="input-divs-s">
-        <input type="text" class="medium-ins" placeholder="numeric" id="shared_cameras" autocomplete="off" style="width: 37px;">
+        <input type="text" v-on:keypress="isNumber($event)" class="medium-ins" placeholder="numeric" id="shared_cameras" autocomplete="off" style="width: 37px;">
       </div>
       <div class="filter-second" style="margin-right: 1px; margin-top: 3px;width: 152px;margin-left: -55px;">
         Remembrance Camera
@@ -248,21 +248,42 @@
         fullname: "",
         email: "",
         payment_method: "",
+        last_login_at_date: "",
+        last_login_at_boolean: "whatever",
+        created_at_date: "",
         allParams: {}
       }
     },
     methods: {
+      isNumber (evt) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if ((charCode > 31 && (charCode < 48 || charCode > 57))) {
+          evt.preventDefault();;
+        } else {
+          return true;
+        }
+      },
+
       userFilterGlobal () {
         this.allParams.username = this.username
         this.allParams.fullname = this.fullname
         this.allParams.email = this.email
         this.allParams.payment_method = this.payment_method
+        this.allParams.last_login_at_boolean = this.last_login_at_boolean
+        this.allParams.last_login_at_date =  this.last_login_at_date
+        this.allParams.created_at_date = this.created_at_date
         this.$events.fire('filter-set', this.allParams)
       },
 
       resetUserFilter () {
-        this.username = ''
-        this.fullname = ''
+        this.username = ""
+        this.fullname = ""
+        this.email = ""
+        this.payment_method = ""
+        this.last_login_at_boolean = "whatever"
+        this.last_login_at_date = ""
+        this.created_at_date = ""
         this.$events.fire('filter-reset')
         console.log('resetFilter')
       }

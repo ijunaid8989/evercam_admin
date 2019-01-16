@@ -58,7 +58,7 @@
 import FieldsDef from "./FieldsDef.js";
 
 export default {
-  data: function() {
+  data: () => {
     return {
       paginationComponent: "vuetable-pagination",
       loading: "",
@@ -101,7 +101,10 @@ export default {
         "username": filterText.username,
         "fullname": filterText.fullname,
         "email": filterText.email,
-        "payment_method": filterText.payment_method
+        "payment_method": filterText.payment_method,
+        "last_login_at_boolean": filterText.last_login_at_boolean,
+        "last_login_at_date": filterText.last_login_at_date,
+        "created_at_date": filterText.created_at_date
       }
       this.$nextTick( () => this.$refs.vuetable.refresh())
     },
