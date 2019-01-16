@@ -1,5 +1,20 @@
 class UsersController < ApplicationController
   def index
+    case_value = "(CASE WHEN (required_licence - (CASE WHEN valid_licence >=0 THEN valid_licence ELSE 0 END)) >= 0 THEN (required_licence - (CASE WHEN valid_licence >=0 THEN valid_licence ELSE 0 END)) ELSE 0 end)"
+    column,order = params["sort"].split("|")
+
+    sorting1 = ""
+    sorting2 = ""
+
+    first_sort = ["payment_method", "username", "name", "email", "api_id", "api_key", "cameras_owned", "camera_shares", "snapmail_count", "country", "created_at", "last_login_at", "required_licence", "referral_url"]
+    second_sort = ["total_cameras", "valid_licence", "required_licence", "def"]
+    if first_sort.include? column
+      sorting1 = sorting(column, order)
+    end
+    if second_sort.include? column
+      sorting2 = sorting(column, order)
+    end
+
     condition = "where 1=1"
     if params[:username].present?
       condition += " and lower(u.username) like lower('%#{params[:username]}%')"
@@ -77,8 +92,7 @@ class UsersController < ApplicationController
       condition2 = ""
     end
 
-    users = User.connection.select_all(
-                "select *, (CASE WHEN (required_licence - (CASE WHEN valid_licence >=0 THEN valid_licence ELSE 0 END)) >= 0 THEN (required_licence - (CASE WHEN valid_licence >=0 THEN valid_licence ELSE 0 END)) ELSE 0 end) def, (cameras_owned + camera_shares) total_cameras from (
+    users = User.connection.select_all("select *, #{case_value} def, (cameras_owned + camera_shares) total_cameras from (
                  select *, (select count(cr.id) from cloud_recordings cr left join cameras c on c.owner_id=u.id where c.id=cr.camera_id and cr.status <>'off' and cr.storage_duration <> 1) required_licence,
                  (select SUM(l.total_cameras) from licences l left join users uu on l.user_id=uu.id where uu.id=u.id and cancel_licence=false) valid_licence,
                  (select count(*) from cameras cc left join users uuu on cc.owner_id=uuu.id where uuu.id=u.id) cameras_owned,
@@ -86,8 +100,8 @@ class UsersController < ApplicationController
                  (select count(*) from snapmails sm left join users suser on sm.user_id=suser.id where suser.id = u.id) snapmail_count,
                  (select name from countries ct left join users uuuuu on ct.id=uuuuu.country_id where uuuuu.id=u.id) country,
                  (select count(cs1.id) from camera_shares cs1 where cs1.user_id=u.id and cs1.camera_id = 279) share_id
-                 from users u #{condition} order by created_at desc
-                ) t #{condition2}")
+                 from users u #{condition} #{sorting1}
+                ) t #{condition2} #{sorting2}")
     total_records = users.count
     display_length = params["per_page"].to_i
     display_length = display_length < 0 ? total_records : display_length
@@ -132,5 +146,50 @@ class UsersController < ApplicationController
     end
     @pageload = false
     render json: records
+  end
+
+  private
+
+  def sorting(col, order)
+    case col
+      when "payment_method"
+        "order by payment_method #{order}"
+      when "username"
+        "order by u.username #{order}"
+      when "name"
+        "order by u.firstname #{order}"
+      when "email"
+        "order by u.email #{order}"
+      when "api_id"
+        "order by u.api_id #{order}"
+      when "api_key"
+        "order by u.api_key #{order}"
+      when "cameras_owned"
+        "order by cameras_owned #{order}"
+      when "camera_shares"
+        "order by camera_shares #{order}"
+      when "total_cameras"
+        "order by total_cameras #{order}"
+      when "snapmail_count"
+        "order by snapmail_count #{order}"
+      when "country"
+        "order by country #{order}"
+      when "created_at"
+        "order by created_at #{order}"
+      when "last_login_at"
+        "order by last_login_at #{order}"
+      when "required_licence"
+        "order by required_licence #{order}"
+      when "valid_licence"
+        "order by valid_licence #{order}"
+      when "def"
+        "order by def #{order}"
+      when "referral_url"
+        "order by referral_url #{order}"
+      when "id"
+        "order by u.id desc"
+      else
+        "order by id #{order}"
+    end
   end
 end

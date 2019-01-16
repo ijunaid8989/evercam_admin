@@ -69,7 +69,7 @@ export default {
       perPage: 60,
       sortOrder: [
         {
-          field: 'name',
+          field: 'created_at',
           direction: 'desc',
         }
       ],
