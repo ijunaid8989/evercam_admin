@@ -104,7 +104,17 @@ export default {
         "payment_method": filterText.payment_method,
         "last_login_at_boolean": filterText.last_login_at_boolean,
         "last_login_at_date": filterText.last_login_at_date,
-        "created_at_date": filterText.created_at_date
+        "created_at_date": filterText.created_at_date,
+        "total_cameras": filterText.total_cameras,
+        "include_erc": filterText.include_erc,
+        "cameras_owned": filterText.cameras_owned,
+        "camera_shares": filterText.camera_shares,
+        "licREQ1": filterText.licREQ1,
+        "licREQ2": filterText.licREQ2,
+        "licVALID1": filterText.licVALID1,
+        "licVALID2": filterText.licVALID2,
+        "licDEF1": filterText.licDEF1,
+        "licDEF2": filterText.licDEF2
       }
       this.$nextTick( () => this.$refs.vuetable.refresh())
     },
