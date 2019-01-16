@@ -29,6 +29,9 @@ Vue.component("v-layout", Layout);
 import UserFilters from "../components/views/users/user_filters";
 Vue.component("v-user-filters", UserFilters);
 
+import UserShowHide from "../components/views/users/users_show_hide";
+Vue.component("v-user-show-hide", UserShowHide);
+
 import App from "../App";
 import Login from "./Login";
 
