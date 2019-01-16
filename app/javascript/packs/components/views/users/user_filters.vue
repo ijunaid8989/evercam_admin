@@ -293,7 +293,7 @@
         this.allParams.licVALID2 = this.licVALID2
         this.allParams.licDEF1 = this.licDEF1
         this.allParams.licDEF2 = this.licDEF2
-        this.$events.fire('filter-set', this.allParams)
+        this.$events.fire('user-filter-set', this.allParams)
       },
 
       resetUserFilter () {
@@ -314,7 +314,7 @@
         this.licVALID2 = ""
         this.licDEF1 = ""
         this.licDEF2 = ""
-        this.$events.fire('filter-reset')
+        this.$events.fire('user-filter-reset')
       }
     }
   }

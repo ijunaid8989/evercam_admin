@@ -94,8 +94,8 @@ export default {
   },
 
   mounted() {
-    this.$events.$on('filter-set', eventData => this.onFilterSet(eventData))
-    this.$events.$on('filter-reset', e => this.onFilterReset())
+    this.$events.$on('user-filter-set', eventData => this.onFilterSet(eventData))
+    this.$events.$on('user-filter-reset', e => this.onFilterReset())
   },
 
   methods: {
