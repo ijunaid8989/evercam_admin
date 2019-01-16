@@ -3,6 +3,9 @@
     <div class="overflow-forms">
       <v-user-filters />
     </div>
+    <div>
+      <v-user-show-hide :vuetable-fields="vuetableFields" />
+    </div>
     <div id="table-wrapper" :class="['vuetable-wrapper ui basic segment', loading]">
       <div class="handle">
         <vuetable ref="vuetable"
@@ -62,6 +65,7 @@ export default {
     return {
       paginationComponent: "vuetable-pagination",
       loading: "",
+      vuetableFields: false,
       perPage: 60,
       sortOrder: [
         {
@@ -75,7 +79,6 @@ export default {
   },
   watch: {
     perPage(newVal, oldVal) {
-      console.log("i am called");
       this.$nextTick(() => {
         this.$refs.vuetable.refresh();
       });
@@ -96,25 +99,25 @@ export default {
   },
 
   methods: {
-    onFilterSet (filterText) {
+    onFilterSet (filters) {
       this.moreParams = {
-        "username": filterText.username,
-        "fullname": filterText.fullname,
-        "email": filterText.email,
-        "payment_method": filterText.payment_method,
-        "last_login_at_boolean": filterText.last_login_at_boolean,
-        "last_login_at_date": filterText.last_login_at_date,
-        "created_at_date": filterText.created_at_date,
-        "total_cameras": filterText.total_cameras,
-        "include_erc": filterText.include_erc,
-        "cameras_owned": filterText.cameras_owned,
-        "camera_shares": filterText.camera_shares,
-        "licREQ1": filterText.licREQ1,
-        "licREQ2": filterText.licREQ2,
-        "licVALID1": filterText.licVALID1,
-        "licVALID2": filterText.licVALID2,
-        "licDEF1": filterText.licDEF1,
-        "licDEF2": filterText.licDEF2
+        "username": filters.username,
+        "fullname": filters.fullname,
+        "email": filters.email,
+        "payment_method": filters.payment_method,
+        "last_login_at_boolean": filters.last_login_at_boolean,
+        "last_login_at_date": filters.last_login_at_date,
+        "created_at_date": filters.created_at_date,
+        "total_cameras": filters.total_cameras,
+        "include_erc": filters.include_erc,
+        "cameras_owned": filters.cameras_owned,
+        "camera_shares": filters.camera_shares,
+        "licREQ1": filters.licREQ1,
+        "licREQ2": filters.licREQ2,
+        "licVALID1": filters.licVALID1,
+        "licVALID2": filters.licVALID2,
+        "licDEF1": filters.licDEF1,
+        "licDEF2": filters.licDEF2
       }
       this.$nextTick( () => this.$refs.vuetable.refresh())
     },

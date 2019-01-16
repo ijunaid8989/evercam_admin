@@ -315,7 +315,6 @@
         this.licDEF1 = ""
         this.licDEF2 = ""
         this.$events.fire('filter-reset')
-        console.log('resetFilter')
       }
     }
   }
