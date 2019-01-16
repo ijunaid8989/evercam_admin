@@ -8,6 +8,12 @@
     <%= stylesheet_pack_tag 'admin/application' %>
   </head>
   <body class="app">
+    <% if notice %>
+      <p class="alert alert-success"><%= notice %></p>
+    <% end %>
+    <% if alert %>
+      <p class="alert alert-danger"><%= alert %></p>
+    <% end %>
     <%= yield %>
     <%= javascript_pack_tag 'admin/application' %>
   </body>
