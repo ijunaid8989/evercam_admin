@@ -37,7 +37,7 @@
 }
 
 .modal-dialog {
-  width: 300px;
+  width: 250px;
   margin-top: 114.5px;
 }
 </style>
