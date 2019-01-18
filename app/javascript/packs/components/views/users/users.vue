@@ -27,7 +27,7 @@
         <div class="field perPage-margin">
           <label>Per Page:</label>
           <select class="ui simple dropdown" v-model="perPage">
-            <option :value="50">50</option>
+            <option :value="60">60</option>
             <option :value="100">100</option>
             <option :value="500">500</option>
             <option :value="1000">1000</option>
