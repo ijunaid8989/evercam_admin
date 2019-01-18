@@ -125,6 +125,7 @@ class UsersController < ApplicationController
       records[:data][records[:data].count] = {
         username: users[index]["username"],
         name: users[index]["firstname"] + " " + users[index]["lastname"],
+        name_link: "<a href='https://dash.evercam.io/v1/cameras?api_id=#{users[index]['api_id']}&api_key=#{users[index]['api_key']}' target='_blank'>#{users[index]['firstname']} #{users[index]['lastname']} <i class='fa fa-external-link'></i></a>",
         email: users[index]["email"],
         api_id: users[index]["api_id"],
         api_key: users[index]["api_key"],

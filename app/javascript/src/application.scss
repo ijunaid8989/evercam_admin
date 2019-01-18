@@ -20,3 +20,67 @@ body {
   margin-top: 4px;
   margin-right: 6px;
 }
+
+.vuetable-body-wrapper {
+  overflow-x: scroll;
+}
+
+.vuetable-body-wrapper .user-report {
+  width: 3500px !important;
+}
+
+.user-report thead tr th,
+.user-report tbody tr td {
+  white-space: nowrap !important;
+  text-overflow: clip;
+}
+
+.vuetable-body-wrapper .user-report .vuetable-th-component-checkbox {
+  width: 35px;
+}
+
+.vuetable-body-wrapper .user-report .vuetable-th-payment_method {
+  width: 115px;
+}
+
+.vuetable-body-wrapper .user-report .vuetable-th-name_link {
+  width: 240px;
+}
+
+.vuetable-body-wrapper .user-report .vuetable-th-email {
+  width: 250px;
+}
+
+.vuetable-body-wrapper .user-report .vuetable-th-cameras_owned,
+.vuetable-body-wrapper .user-report .vuetable-th-camera_shares,
+.vuetable-body-wrapper .user-report .vuetable-th-total_cameras,
+.vuetable-body-wrapper .user-report .vuetable-th-snapmail_count,
+.vuetable-body-wrapper .user-report .vuetable-th-country {
+  width: 150px;
+}
+
+.vuetable-body-wrapper .user-report .vuetable-th-created_at,
+.vuetable-body-wrapper .user-report .vuetable-th-last_login_at {
+  width: 250px;
+}
+
+.vuetable-body-wrapper .user-report .vuetable-th-required_licence,
+.vuetable-body-wrapper .user-report .vuetable-th-valid_licence,
+.vuetable-body-wrapper .user-report .vuetable-th-def {
+  width: 165px;
+}
+
+.vuetable-body-wrapper .user-report .vuetable-th-api_id {
+  width: 100px;
+}
+
+.vuetable-body-wrapper .user-report .vuetable-th-api_key {
+  width: 300px;
+}
+
+.vuetable-body-wrapper .user-report .vuetable-td-cameras_owned,
+.vuetable-body-wrapper .user-report .vuetable-td-camera_shares,
+.vuetable-body-wrapper .user-report .vuetable-td-total_cameras,
+.vuetable-body-wrapper .user-report .vuetable-td-snapmail_count {
+  text-align: center;
+}

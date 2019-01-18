@@ -20,6 +20,7 @@
           @vuetable:initialized="onInitialized"
           @vuetable:loading="showLoader"
           @vuetable:loaded="hideLoader"
+          :css="css.table"
         />
       </div>
       <div class="vuetable-pagination ui bottom segment grid">
@@ -43,22 +44,22 @@
 </template>
 
 <style scoped>
-  .perPage-margin {
-    margin-top: 5px;
-  }
-  .handle {
-    overflow-x: scroll;
-  }
-  .overflow-forms {
-    overflow: hidden;
-  }
-  #table-wrapper {
-    margin-top: 3px;
-  }
+.perPage-margin {
+  margin-top: 5px;
+}
+
+.overflow-forms {
+  overflow: hidden;
+}
+
+#table-wrapper {
+  margin-top: 3px;
+}
 </style>
 
 <script>
 import FieldsDef from "./FieldsDef.js";
+import TableWrapper from "./TableWrapper.js";
 
 export default {
   data: () => {
@@ -73,6 +74,7 @@ export default {
           direction: 'desc',
         }
       ],
+      css: TableWrapper,
       moreParams: {},
       fields: FieldsDef
     }
