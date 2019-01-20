@@ -108,14 +108,14 @@
         Actions
       </div>
       <div class="btn-div" style="width: 235px;margin-left: 10px;">
-        <button class="clear-btn-f" id="btn-modify">Modify</button>
+        <button v-on:click="onModifyClick" class="clear-btn-f" id="btn-modify">Modify</button>
+        <modal :usersModify="usersModify" />
         <button class="clear-btn-f" id="btn-delete">Delete</button>
         <button type="button" @click="resetUserFilter" class="clear-btn-f" id="filterClear">Clear Filter</button>
       </div>
     </div>
   </div>
 </template>
-
 
 <style scoped>
 .form-main {
@@ -241,9 +241,15 @@
 }
 </style>
 <script>
+  import Modal from './modify_users';
   export default {
+    components: {
+      Modal
+    },
+    props: ["selectedUsers"],
     data () {
       return {
+        usersModify: false,
         username: "",
         fullname: "",
         email: "",
@@ -263,6 +269,9 @@
         licDEF2: "",
         allParams: {}
       }
+    },
+    mounted() {
+      this.$events.$on("close-user-modify", eventData => this.onModifyClose(eventData))
     },
     methods: {
       isNumber (evt) {
@@ -315,6 +324,24 @@
         this.licDEF1 = ""
         this.licDEF2 = ""
         this.$events.fire('user-filter-reset')
+      },
+      onModifyClick () {
+        let self = this
+
+        if (Object.keys(self.selectedUsers).length === 0) {
+          this.$notify({
+            group: "admins",
+            title: "Please",
+            type: "error",
+            text: "At least select one user!",
+          });
+        } else {
+          console.log(self.selectedUsers);
+          this.usersModify = true
+        }
+      },
+      onModifyClose(modal) {
+        this.usersModify = modal
       }
     }
   }

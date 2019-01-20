@@ -3,8 +3,8 @@ import accounting from "accounting"
 
 export default [
   {
-    name: 'vuetable-field-checkbox',
-    title: "checkbox",
+    name: "checkbox-slot",
+    titleClass: "user-checkbox"
   },
   {
     name: 'payment_method', 

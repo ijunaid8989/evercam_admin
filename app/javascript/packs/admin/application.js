@@ -11,6 +11,9 @@ import "popper.js"
 import "bootstrap/dist/js/bootstrap";
 import "@coreui/coreui/dist/js/coreui";
 
+import Notifications from "vue-notification";
+Vue.use(Notifications);
+
 import Gravatar from 'vue-gravatar';
 Vue.component('v-gravatar', Gravatar);
 
@@ -31,6 +34,9 @@ Vue.component("v-user-filters", UserFilters);
 
 import UserShowHide from "../components/views/users/users_show_hide";
 Vue.component("v-user-show-hide", UserShowHide);
+
+// import ModifyUsers from "../components/views/users/modify_users";
+// Vue.component("v-modify-users", ModifyUsers);
 
 import App from "../App";
 import Login from "./Login";
