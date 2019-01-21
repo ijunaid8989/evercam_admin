@@ -7,6 +7,8 @@ Vue.use(VueEvents)
 Vue.use(VueRouter);
 Vue.use(VueResource);
 
+Vue.http.headers.common['X-CSRF-TOKEN'] = document.head.querySelector('meta[name="csrf-token"]').content;
+
 import Users from "./components/views/users/users";
 import Page404 from "./components/views/Page404";
 

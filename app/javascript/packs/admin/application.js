@@ -11,6 +11,9 @@ import "popper.js"
 import "bootstrap/dist/js/bootstrap";
 import "@coreui/coreui/dist/js/coreui";
 
+import Notifications from "vue-notification";
+Vue.use(Notifications);
+
 import Gravatar from 'vue-gravatar';
 Vue.component('v-gravatar', Gravatar);
 
@@ -32,6 +35,9 @@ Vue.component("v-user-filters", UserFilters);
 import UserShowHide from "../components/views/users/users_show_hide";
 Vue.component("v-user-show-hide", UserShowHide);
 
+// import ModifyUsers from "../components/views/users/modify_users";
+// Vue.component("v-modify-users", ModifyUsers);
+
 import App from "../App";
 import Login from "./Login";
 
@@ -46,13 +52,15 @@ document.addEventListener('DOMContentLoaded', () => {
   if(document.getElementById("app")){
     const node = document.getElementById('app');
     const current_user = JSON.parse(node.getAttribute('current_user'));
+    const api_url = node.getAttribute('api_url');
 
     const app = new Vue({
       el: '#app',
       router,
       template: '<App />',
       data: {
-        user: current_user
+        user: current_user,
+        api_url: api_url
       },
       components: { App }
     }).$mount('#app');

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="overflow-forms">
-      <v-user-filters />
+      <v-user-filters :selectedUsers="selectedUsers" />
     </div>
     <div>
       <v-user-show-hide :vuetable-fields="vuetableFields" />
@@ -21,7 +21,11 @@
           @vuetable:loading="showLoader"
           @vuetable:loaded="hideLoader"
           :css="css.table"
-        />
+        >
+        <div slot="checkbox-slot" slot-scope="props">
+          <input type="checkbox" @click="onCheckBoxClick($event, props.rowData)" />
+        </div>
+        </vuetable>
       </div>
       <div class="vuetable-pagination ui bottom segment grid">
         <div class="field perPage-margin">
@@ -64,6 +68,7 @@ import TableWrapper from "./TableWrapper.js";
 export default {
   data: () => {
     return {
+      selectedUsers: [],
       paginationComponent: "vuetable-pagination",
       loading: "",
       vuetableFields: false,
@@ -98,6 +103,7 @@ export default {
   mounted() {
     this.$events.$on('user-filter-set', eventData => this.onFilterSet(eventData))
     this.$events.$on('user-filter-reset', e => this.onFilterReset())
+    this.$events.$on('user-modify-refresh', e => this.onUserModifyRefresh())
   },
 
   methods: {
@@ -121,6 +127,11 @@ export default {
         "licDEF1": filters.licDEF1,
         "licDEF2": filters.licDEF2
       }
+      this.$nextTick( () => this.$refs.vuetable.refresh())
+    },
+
+    onUserModifyRefresh () {
+      this.selectedUsers = []
       this.$nextTick( () => this.$refs.vuetable.refresh())
     },
 
@@ -148,6 +159,23 @@ export default {
 
     hideLoader() {
       this.loading = "";
+    },
+
+    onCheckBoxClick(event, data) {
+      const userAttributes = {
+        id: data.id,
+        email: data.email,
+        api_key: data.api_key,
+        api_id: data.api_id
+      }
+
+      this.$nextTick(() => {
+        if(event.target.checked) {
+          this.selectedUsers.push(userAttributes);
+        } else {
+          this.selectedUsers = this.selectedUsers.filter(user => user.id !== data.id)
+        }      
+      })
     }
   }
 }

@@ -108,14 +108,14 @@
         Actions
       </div>
       <div class="btn-div" style="width: 235px;margin-left: 10px;">
-        <button class="clear-btn-f" id="btn-modify">Modify</button>
-        <button class="clear-btn-f" id="btn-delete">Delete</button>
+        <button v-on:click="onModifyClick" class="clear-btn-f" id="btn-modify">Modify</button>
+        <modal :usersModify="usersModify" />
+        <button class="clear-btn-f" id="btn-delete" @click="deletUsers">Delete</button>
         <button type="button" @click="resetUserFilter" class="clear-btn-f" id="filterClear">Clear Filter</button>
       </div>
     </div>
   </div>
 </template>
-
 
 <style scoped>
 .form-main {
@@ -241,9 +241,16 @@
 }
 </style>
 <script>
+  import Modal from './modify_users';
   export default {
+    components: {
+      Modal
+    },
+    props: ["selectedUsers"],
     data () {
       return {
+        usersModify: false,
+        usersDelete: false,
         username: "",
         fullname: "",
         email: "",
@@ -263,6 +270,10 @@
         licDEF2: "",
         allParams: {}
       }
+    },
+    mounted() {
+      this.$events.$on("close-user-modify", eventData => this.onModifyClose(eventData))
+      this.$events.$on("users-modify", eventData => this.onModifySave(eventData))
     },
     methods: {
       isNumber (evt) {
@@ -315,6 +326,84 @@
         this.licDEF1 = ""
         this.licDEF2 = ""
         this.$events.fire('user-filter-reset')
+      },
+      onModifyClick () {
+        let self = this
+
+        if (Object.keys(self.selectedUsers).length === 0) {
+          this.$notify({
+            group: "admins",
+            title: "Error",
+            type: "error",
+            text: "At least select one user!",
+          });
+        } else {
+          this.usersModify = true
+        }
+      },
+      onModifyClose(modal) {
+        this.usersModify = modal
+      },
+      onModifySave (params) {
+        let self = this
+        let ids = ""
+        self.selectedUsers.map((user) => {
+          if (ids === "") {
+            ids += "" + user.id +""
+          } else {
+            ids += "," + user.id +""
+          }
+        });
+
+        this.$http.patch("/v1/update_multiple_users", {...params, ...{ids: ids}}).then(response => {
+          this.usersModify = false
+          this.$router.go()
+          // this.$events.fire("user-modify-refresh", true)
+          this.$notify({
+            group: "admins",
+            title: "Info",
+            type: "success",
+            text: "Users have been updated!",
+          });
+        }, error => {
+          this.$notify({
+            group: "admins",
+            title: "Error",
+            type: "error",
+            text: "Something went wrong!",
+          });
+          this.usersModify = true
+        });
+      },
+      deletUsers () {
+        let self = this
+        if (Object.keys(self.selectedUsers).length === 0) {
+          this.$notify({
+            group: "admins",
+            title: "Error",
+            type: "error",
+            text: "At least select one user!",
+          });
+        } else {
+          if (window.confirm("Are you sure you want to delete this event?")) {
+            console.log(self.selectedUsers)
+            self.selectedUsers.forEach((user) => {
+              this.$http.delete(`${this.$root.api_url}/v1/users/${user.email}?api_id=${user.api_id}&api_key=${user.api_key}`).then(response => {
+                console.log(response.body)
+              }, error => {
+                console.log(error)
+                this.$notify({
+                  group: "admins",
+                  title: "Error",
+                  type: "error",
+                  text: `${error.body.message}`,
+                });
+              });
+            });
+            this.$router.go()
+            // this.$events.fire("user-modify-refresh", true)
+          }
+        }
       }
     }
   }
