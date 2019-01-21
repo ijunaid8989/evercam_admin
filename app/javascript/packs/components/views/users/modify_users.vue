@@ -13,16 +13,17 @@
             <div class="form-group row">
               <label class="col-md-4 col-form-label cntry">Country</label>
               <div class="col-md-7">
-                <select class="form-control is-required" autocomplete="off">
-                  <option value="">Select Country</option>
+                <select class="form-control is-required" autocomplete="off" v-model="selectedCountry">
+                  <option v-for="country in countries" v-bind:value="country.id">
+                    {{ country.name }}
+                  </option>
                 </select>
               </div>
             </div>
             <div class="form-group row">
               <label class="col-md-4 col-form-label">Payment Type</label>
               <div class="col-md-7">
-                <select class="form-control is-required" autocomplete="off">
-                  <option value="">Select Payment Type</option>
+                <select class="form-control is-required" autocomplete="off" v-model="selectPMethod">
                   <option value="0">Stripe</option>
                   <option value="1">Custom</option>
                   <option value="2">Construction</option>
@@ -34,6 +35,7 @@
             </div>
           </div>
           <div class="modal-footer">
+            <button type="button" class="btn btn-success" @click="saveAndHideUserModify()"> Save </button>
             <button type="button" class="btn btn-primary" @click="hideUserModify()"> Close </button>
           </div>
         </div>
@@ -69,9 +71,37 @@
 <script>
   export default {
     props: ["usersModify"],
+    data: () => {
+      return {
+        selectedCountry: 1,
+        selectPMethod: 0,
+        countries: []
+      }
+    },
+    mounted(){
+      this.fetchCountries()
+    },
     methods: {
       hideUserModify () {
+        this.selectedCountry = 1
+        this.selectPMethod = 0
         this.$events.fire("close-user-modify", false)
+      },
+      fetchCountries () {
+        this.$http.get("/v1/countries").then(response => {
+          this.countries = response.body;
+        }, error => {
+          console.error(error);
+        });
+      },
+      saveAndHideUserModify () {
+        const params = {
+          country: this.selectedCountry,
+          payment_type: this.selectPMethod
+        }
+        this.selectedCountry = 1
+        this.selectPMethod = 0
+        this.$events.fire("users-modify", params)
       }
     }
   }

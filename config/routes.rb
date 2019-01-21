@@ -9,4 +9,7 @@ Rails.application.routes.draw do
   # match "*path", to: "application#index", format: false, via: :get
 
   get "/v1/users" => "users#index"
+  get "/v1/countries" => "users#countries"
+
+  patch "/v1/update_multiple_users" => "users#update_multiple_users"
 end

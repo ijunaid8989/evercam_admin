@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+
   def index
     case_value = "(CASE WHEN (required_licence - (CASE WHEN valid_licence >=0 THEN valid_licence ELSE 0 END)) >= 0 THEN (required_licence - (CASE WHEN valid_licence >=0 THEN valid_licence ELSE 0 END)) ELSE 0 end)"
     column,order = params["sort"].split("|")
@@ -147,6 +148,28 @@ class UsersController < ApplicationController
     end
     @pageload = false
     render json: records
+  end
+
+  def countries
+    countries = Country.all.map do |country|
+      {
+        id: country.id,
+        name: country.name
+      }
+    end
+    render json: countries
+  end
+
+  def update_multiple_users
+    update_string = ""
+    if params["payment_type"].present?
+      update_string += ",payment_method=#{params["payment_type"]}"
+    end
+    if params["country"].present?
+      update_string += ",country_id=#{params["country"]}"
+    end
+    User.connection.select_all("update users set updated_at=now()#{update_string} where id in (#{params["ids"]})")
+    render json: {success: true}
   end
 
   private
