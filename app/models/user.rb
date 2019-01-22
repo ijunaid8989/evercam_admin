@@ -10,4 +10,8 @@ class User < ApplicationRecord
     self["password"] = self.encrypted_password
     self["username"] = self.email
   end
+
+  def active_for_authentication?
+    super && self.is_admin?
+  end
 end
