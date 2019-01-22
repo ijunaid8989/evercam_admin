@@ -3,9 +3,9 @@ require 'rails_helper'
 RSpec.describe "Sessions" do
   it "signs user in and out" do
     user = User.create(
-      email: 'test@example.com',
-      firstname: "junaid",
-      lastname: "farooq", 
+      email: 'jonsnow@example.com',
+      firstname: "jon",
+      lastname: "snow",
       password: 'password123',
       password_confirmation: 'password123'
     )
