@@ -7,7 +7,8 @@ RSpec.describe "Sessions" do
       firstname: "jon",
       lastname: "snow",
       password: 'password123',
-      password_confirmation: 'password123'
+      password_confirmation: 'password123',
+      is_admin: true
     )
     sign_in user
     get root_path
