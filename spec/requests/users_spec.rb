@@ -31,6 +31,22 @@ RSpec.describe "API V1 Users", type: 'request' do
     expect(response_body["total"]).to eq(1)
   end
 
+  it "should update user's country and payment_type" do
+    sign_in @user
+    patch "/v1/update_multiple_users", :params => { :country => 3, :payment_type => 2, :ids => @user.id }
+
+    expect(response_body["success"]).to eq(true)
+  end
+
+  it "should fail due to params are missing while updating user" do
+    sign_in @user
+    patch "/v1/update_multiple_users", :params => { :ids => @user.id }
+
+    expect(response_body["success"]).to eq(false)
+    expect(response_body["errors"]["country"]).to eq("Country params are missing.")
+    expect(response_body["errors"]["payment_type"]).to eq("Payment_type params are missing.")
+  end
+
   def response_body
     JSON.parse(response.body)
   end
