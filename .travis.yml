@@ -25,6 +25,7 @@ before_script:
 script:
 - yarn install
 - RAILS_ENV=test bundle exec bin/rails webpacker:compile
+- yarn test
 - RAILS_ENV=test bundle exec rspec --pattern 'spec/**/*_spec.rb'
 
 env:
