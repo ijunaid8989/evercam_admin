@@ -6,7 +6,7 @@ rvm:
 - 2.5.3
 
 addons:
-  postgresql: 9.6
+  postgresql: 9.3
   code_climate:
       repo_token: 60ad47ec3581b7f187f9b7418a58c2a25c4dd5979a00f499f1fac855aa91599e
 
