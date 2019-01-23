@@ -11,6 +11,9 @@ addons:
       repo_token: 60ad47ec3581b7f187f9b7418a58c2a25c4dd5979a00f499f1fac855aa91599e
 
 before_script:
+  - nvm install 11.4.0
+  - nvm use 11.4.0
+  - npm install -g yarn@v1.12.3
   - psql -U postgres -c "create extension postgis"
   - ./scripts/travis
   - export DISPLAY=:99.0
@@ -20,7 +23,9 @@ before_script:
   - bin/rails db:migrate RAILS_ENV=test
 
 script:
-- RAILS_ENV=test bundle exec rspec --pattern 'c*/*_spec.rb,h*/*_spec.rb'
+- yarn install
+- RAILS_ENV=test bundle exec bin/rails webpacker:compile
+- RAILS_ENV=test bundle exec rspec --pattern 'spec/**/*_spec.rb'
 
 env:
   matrix:
