@@ -162,14 +162,27 @@ class UsersController < ApplicationController
 
   def update_multiple_users
     update_string = ""
+    errors = {}
+    if !params["ids"].present?
+      errors["ids"] = "User ids are not given."
+    end
     if params["payment_type"].present?
       update_string += ",payment_method=#{params["payment_type"]}"
+    elsif
+      errors["payment_type"] = "Payment_type params are missing."
     end
     if params["country"].present?
       update_string += ",country_id=#{params["country"]}"
+    elsif
+      errors["country"] = "Country params are missing."
     end
-    User.connection.select_all("update users set updated_at=now()#{update_string} where id in (#{params["ids"]})")
-    render json: {success: true}
+
+    if errors.empty?
+      User.connection.select_all("update users set updated_at=now()#{update_string} where id in (#{params["ids"]})")
+      render json: {success: true}
+    elsif
+      render json: {success: false, errors: errors}
+    end
   end
 
   private
