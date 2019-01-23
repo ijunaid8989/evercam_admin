@@ -1,0 +1,8 @@
+#!/bin/sh
+export EVERCAM_ENV="test"
+
+SCHEMA="./db/structure.sql"
+
+dropdb --if-exists evercam_tst \
+  && createdb evercam_tst \
+  && psql evercam_tst < $SCHEMA
