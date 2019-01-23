@@ -7,6 +7,7 @@
     "@coreui/icons": "0.3.0",
     "@coreui/vue": "^2.1.0",
     "@rails/webpacker": "3.5",
+    "accounting": "latest",
     "bootstrap": "^4.1.3",
     "bootstrap-vue": "^2.0.0-rc.11",
     "chart.js": "^2.7.3",
@@ -16,23 +17,31 @@
     "flag-icon-css": "^3.2.0",
     "font-awesome": "^4.7.0",
     "jquery": "^3.3.1",
+    "moment": "latest",
     "perfect-scrollbar": "^1.4.0",
     "popper.js": "^1.14.4",
+    "semantic-ui-css": "2.4.1",
     "simple-line-icons": "^2.4.1",
     "vue": "^2.5.21",
+    "vue-events": "^3.1.0",
     "vue-gravatar": "^1.3.0",
     "vue-loader": "14.2.2",
+    "vue-notification": "^1.3.14",
     "vue-resource": "^1.5.1",
     "vue-router": "^3.0.1",
     "vue-template-compiler": "^2.5.21",
-    "vuetable-2": "next",
-    "accounting": "latest",
-    "moment": "latest",
-    "semantic-ui-css": "2.4.1",
-    "vue-events": "^3.1.0",
-    "vue-notification": "^1.3.14"
+    "vuetable-2": "next"
   },
   "devDependencies": {
+    "jest": "^23.6.0",
     "webpack-dev-server": "2.11.2"
+  },
+  "jest": {
+    "roots": [
+      "spec/javascript"
+    ]
+  },
+  "scripts": {
+    "test": "jest"
   }
 }
